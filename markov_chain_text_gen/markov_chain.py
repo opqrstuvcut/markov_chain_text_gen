@@ -62,7 +62,6 @@ def generate_text(dist_dict, ngrams=3, max_size=3):
             word = keys[word_ind]
             generated_text.append(word)
             ngram_words = tuple([ngram_words[1 + i] if i != ngrams - 1 else word for i in range(ngrams)])
-            print(word_ind)
 
             if phrase_word_num >= 20:
                 break
@@ -78,7 +77,6 @@ def generate_text(dist_dict, ngrams=3, max_size=3):
             if word_ind != 0:
                 zero_ind_num += 1
 
-        print("")
         if phrase_word_num >= 20:
             continue
 
