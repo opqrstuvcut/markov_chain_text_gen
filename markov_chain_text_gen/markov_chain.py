@@ -4,9 +4,10 @@ import argparse
 from collections import defaultdict
 from itertools import islice
 
-import MeCab
 import numpy as np
 import jaconv
+
+from . import mecab
 
 
 def parse_argument():
@@ -14,18 +15,17 @@ def parse_argument():
     parser.add_argument("--input", "-i")
     parser.add_argument("--ngram", "-n", type=int)
     parser.add_argument("--max_size", "-m", type=int)
-    parser.add_argument("--output_path", "-o")
     args = parser.parse_args()
     return args
 
 
 def read_text(path):
-    mecab = MeCab.Tagger("-Owakati")
+    mecab_parser = mecab.get_mecab_ins()
     with open(path, "r") as f:
         texts = []
         for text in f:
             text = text.replace("「", "").replace("」", "")
-            parsed_text = mecab.parse(text).strip().split(" ")
+            parsed_text = mecab_parser.parse(text).strip().split(" ")
             texts.append(parsed_text)
 
     return texts
@@ -67,10 +67,17 @@ class Generator(object):
 
         self._dist_dict = dist_dict
 
-    def generate_text(self):
+    def generate_text(self, init=None):
         while True:
-            ngram_words = tuple(["" for _ in range(self._ngrams)])
-            generated_text = []
+            if init:
+                ngram_words = tuple([init[i - self._ngrams]
+                                     if i >= self._ngrams - len(init) else ""
+                                     for i in range(self._ngrams)])
+                generated_text = init.copy()
+            else:
+                ngram_words = tuple(["" for _ in range(self._ngrams)])
+                generated_text = []
+
             phrase_point_num = 0
             zero_ind_num = 0
             phrase_word_num = 0
@@ -102,7 +109,7 @@ class Generator(object):
             if phrase_word_num > self._max_words:
                 continue
 
-            if zero_ind_num > self._text_complex:
+            if zero_ind_num > self._text_complex or init:
                 break
 
         return generated_text
@@ -115,7 +122,7 @@ def main():
 
     gen = Generator(args.ngram, args.max_size, 20, 4)
     gen.make_dist(parsed_text)
-    generated_text = gen.generate_text()
+    generated_text = gen.generate_text(init=["美しい"])
 
     print("".join(generated_text))
 
