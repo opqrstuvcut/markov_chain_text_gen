@@ -78,6 +78,7 @@ class Generator(object):
                 ngram_words = tuple(["" for _ in range(self._ngrams)])
                 generated_text = []
 
+            text_complex = self._text_complex
             phrase_point_num = 0
             zero_ind_num = 0
             phrase_word_num = 0
@@ -109,8 +110,11 @@ class Generator(object):
             if phrase_word_num > self._max_words:
                 continue
 
-            if zero_ind_num > self._text_complex or init:
+            if zero_ind_num > text_complex:
                 break
+
+            if init:
+                text_complex -= 1
 
         return generated_text
 

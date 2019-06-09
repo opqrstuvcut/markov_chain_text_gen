@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </head>
+
+
+    <body>
+        <div id="app">
+            <input v-model="input" />
+            <p>生成文：[[ generatedText ]]</p>
+        </div>
+
+
+        <script type="text/javascript">
+            axios.defaults.baseURL = window.location.href
+
+var app = new Vue({
+    el: '#app',
+    delimiters: ["[[", "]]"],
+    data: {
+        input: "サイコパワー",
+        generatedText: "サイコパワーが身体の筋肉を鍛える。あらゆる格闘技を使う。"
+    },
+    watch: {
+        input: function (newInput, oldInput) {
+            axios.post(`api/generate`,
+                {'input': newInput}).then(response => {this.generatedText = response["data"]["res"];})
+                .catch(error => {
+                    console.log(error);
+                })
+        }}
+})
+        </script>
+
+    </body>
+</html>
