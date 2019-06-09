@@ -1,0 +1,16 @@
+certifi==2019.3.9
+Click==7.0
+Flask==1.0.3
+get==2019.4.13
+itsdangerous==1.1.0
+jaconv==0.2.4
+Jinja2==2.10.1
+MarkupSafe==1.1.1
+mecab-python3==0.996.2
+numpy==1.16.4
+post==2019.4.13
+public==2019.4.13
+query-string==2019.4.13
+request==2019.4.13
+tqdm==4.32.1
+Werkzeug==0.15.4
