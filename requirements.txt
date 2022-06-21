@@ -7,7 +7,7 @@ jaconv==0.2.4
 Jinja2==2.10.1
 MarkupSafe==1.1.1
 mecab-python3==0.996.2
-numpy==1.16.4
+numpy==1.22.0
 post==2019.4.13
 public==2019.4.13
 query-string==2019.4.13
